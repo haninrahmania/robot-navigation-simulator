@@ -31,7 +31,7 @@ This project explores several fundamental robotics topics:
 - Integration with ROS2
 
 ## Project Development Log
-### Version 1 — Static Grid Navigation
+### Version 1 - Static Grid Navigation
 #### Features:
 - 2D grid world
 - Static obstacle generation
