@@ -1,2 +1,31 @@
-# robot-navigation-simulator
-A 2D robot navigation simulator implementing A* path planning and grid-based obstacle avoidance, designed to explore foundational robotics concepts including motion planning and trajectory execution.
+# Robot Navigation Simulator
+This project investigates classical deterministic motion planning methods for autonomous mobile robots in structured environments. A grid-based configuration space is constructed, and A* search is applied to compute collision-free trajectories under obstacle constraints. The simulator is designed as a foundation for further research into trajectory control, dynamic environments, and probabilistic robotics.
+
+## Objectives
+- Implement classical path planning algorithms used in robotics
+- Model obstacle-aware navigation in a structured environment
+- Visualize search behavior and trajectory execution
+- Build a foundation for future extensions including control systems and dynamic environments
+
+## Core Features
+- 2D grid world representation
+- Static obstacle placement
+- A* path planning
+- Path cost computation (g, h, f evaluation)
+- Visualized search exploration and final trajectory
+- Modular architecture separating environment, planner, and robot logic
+
+## Technical Concepts
+This project explores several fundamental robotics topics:
+- Graph search and heuristic-based planning
+- Configuration space modeling
+- Discrete motion planning
+- Autonomous navigation logic
+
+## Future Extensions
+- PID-based trajectory tracking
+- Dynamic obstacle avoidance
+- Probabilistic occupancy grid mapping
+- Sensor noise simulation
+- Multi-agent navigation
+- Integration with ROS2
