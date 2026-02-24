@@ -9,6 +9,10 @@ CELL_SIZE = 30
 WIDTH = COLS * CELL_SIZE
 HEIGHT = ROWS * CELL_SIZE
 
+WHITE = (255, 255, 255)
+ORANGE = (255, 165, 0)   # Closed set
+YELLOW = (255, 255, 0)   # Open set
+
 def main():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -26,29 +30,43 @@ def main():
     grid.grid[goal[0]][goal[1]] = 0
 
     planner = AStarPlanner(grid)
-    path = planner.plan(start, goal)
+    planner.initialize(start, goal)
 
     robot = Robot(start, CELL_SIZE)
 
-    if path:
-        robot.set_path(path)
-    else:
-        print("No path found!")
-
     running = True
     while running:
-        clock.tick(5)
+        clock.tick(30) 
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
+        # STEP-BY-STEP PLANNING
+        if not planner.finished:
+            planner.step()
+        elif planner.path and not robot.path:
+            robot.set_path(planner.path)
+
         robot.update()
 
-        screen.fill((255, 255, 255))
+        screen.fill(WHITE)
         grid.draw(screen)
 
-        if path:
+        # Draw closed set (explored nodes)
+        for node in planner.closed_set:
+            r, c = node
+            rect = pygame.Rect(c * CELL_SIZE, r * CELL_SIZE, CELL_SIZE, CELL_SIZE)
+            pygame.draw.rect(screen, ORANGE, rect)
+
+        # Draw open set (frontier)
+        for _, node in planner.open_set:
+            r, c = node
+            rect = pygame.Rect(c * CELL_SIZE, r * CELL_SIZE, CELL_SIZE, CELL_SIZE)
+            pygame.draw.rect(screen, YELLOW, rect)
+
+        # Draw final path if found
+        if planner.path:
             robot.draw_path(screen)
 
         robot.draw(screen)
