@@ -29,3 +29,37 @@ This project explores several fundamental robotics topics:
 - Sensor noise simulation
 - Multi-agent navigation
 - Integration with ROS2
+
+## Project Development Log
+### Version 1 - Static Grid Navigation
+#### Features:
+- 2D grid world
+- Static obstacle generation
+- A* path planning (4-connected)
+- Manhattan heuristic
+- Path visualization
+- Basic robot traversal
+
+#### Limitations:
+- No search exploration visualization
+- Discrete teleport-style motion
+- No dynamic obstacles
+- No continuous trajectory modeling
+
+### Version 2 - Incremental A* Execution & Search Visualization
+#### Major Changes:
+- Refactored A* implementation to support step-wise execution
+- Exposed open set and closed set states
+- Integrated real-time visualization of search expansion
+- Converted planning loop from batch computation to incremental updates
+
+#### Why This Matters:
+- Improves transparency of algorithm behavior
+- Enables debugging and heuristic analysis
+- Establishes foundation for comparative planner experiments
+
+#### New Limitations:
+- Still limited to 4-connected grid
+- Uniform cost movement
+- No diagonal motion
+- No continuous trajectory modeling
