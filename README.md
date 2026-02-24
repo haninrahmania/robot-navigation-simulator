@@ -99,3 +99,4 @@ Euclidean distance is admissible and consistent for an 8-connected weighted grid
 - Better geometric alignment with diagonal motion
 
 This results in more realistic trajectories, shorter path length, reduced “staircase” effect, and better approximation of continuous-space navigation
+

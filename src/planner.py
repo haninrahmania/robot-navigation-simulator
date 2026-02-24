@@ -14,19 +14,37 @@ class AStarPlanner:
         self.path = None
 
     def heuristic(self, a, b):
-        return abs(a[0] - b[0]) + abs(a[1] - b[1])  # Manhattan
+        return math.sqrt((a[0] - b[0])**2 + (a[1] - b[1])**2)
 
     def get_neighbors(self, node):
-        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        directions = [
+            (-1, 0), (1, 0), (0, -1), (0, 1),      # cardinal
+            (-1, -1), (-1, 1), (1, -1), (1, 1)    # diagonal
+        ]
+
         neighbors = []
 
         for dr, dc in directions:
-            neighbor = (node[0] + dr, node[1] + dc)
+            nr = node[0] + dr
+            nc = node[1] + dc
+            neighbor = (nr, nc)
 
-            if self.grid.in_bounds(neighbor) and not self.grid.is_obstacle(neighbor):
-                neighbors.append(neighbor)
+            if not self.grid.in_bounds(neighbor):
+                continue
+
+            if self.grid.is_obstacle(neighbor):
+                continue
+
+            # Prevent corner cutting
+            if dr != 0 and dc != 0:
+                if self.grid.is_obstacle((node[0] + dr, node[1])) or \
+                self.grid.is_obstacle((node[0], node[1] + dc)):
+                    continue
+
+            neighbors.append(neighbor)
 
         return neighbors
+
 
     def initialize(self, start, goal):
         self.start = start
@@ -57,7 +75,16 @@ class AStarPlanner:
             return
 
         for neighbor in self.get_neighbors(current):
-            tentative_g = self.g_score[current] + 1
+            dx = abs(neighbor[0] - current[0])
+            dy = abs(neighbor[1] - current[1])
+
+            if dx == 1 and dy == 1:
+                move_cost = math.sqrt(2)
+            else:
+                move_cost = 1
+
+            tentative_g = self.g_score[current] + move_cost
+
 
             if neighbor in self.closed_set:
                 continue
