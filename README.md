@@ -31,7 +31,7 @@ This project explores several fundamental robotics topics:
 - Integration with ROS2
 
 ## Project Development Log
-### Version 1 - Static Grid Navigation
+### Version 0.1.0 - Static Grid Navigation
 #### Features:
 - 2D grid world
 - Static obstacle generation
@@ -46,7 +46,7 @@ This project explores several fundamental robotics topics:
 - No dynamic obstacles
 - No continuous trajectory modeling
 
-### Version 2 - Incremental A* Execution & Search Visualization
+### Version 0.2.0 - Incremental A* Execution & Search Visualization
 #### Major Changes:
 - Refactored A* implementation to support step-wise execution
 - Exposed open set and closed set states
@@ -63,3 +63,39 @@ This project explores several fundamental robotics topics:
 - Uniform cost movement
 - No diagonal motion
 - No continuous trajectory modeling
+
+### Version 0.3.0 - 8-Connected A* Navigation
+This update improves the navigation system by upgrading the motion model and heuristic for more realistic robot movement.
+
+#### Motion Model Upgrade
+The planner now uses an 8-connected grid instead of a 4-connected grid.
+
+Previous (v0.2):
+- Movement allowed: up, down, left, right
+- Cost per move: 1
+
+Current (v0.3):
+- Movement allowed: up, down, left, right + 4 diagonals
+- Cost:
+-- 1 for cardinal moves
+-- √2 for diagonal moves
+
+This better approximates real-world robot motion and produces shorter, more natural paths.
+
+#### Heuristic Update
+The heuristic function has been upgraded from Manhattan distance to Euclidean distance.
+
+Previous heuristic (Manhattan):
+
+[ |x1 - x2| + |y1 - y2| ]
+
+Current heuristic (Euclidean):
+
+[ sqrt((x1 - x2)^2 + (y1 - y2)^2)] 
+
+Euclidean distance is admissible and consistent for an 8-connected weighted grid, ensuring:
+- Optimal paths
+- Efficient node expansion
+- Better geometric alignment with diagonal motion
+
+This results in more realistic trajectories, shorter path length, reduced “staircase” effect, and better approximation of continuous-space navigation
