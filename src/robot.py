@@ -40,3 +40,6 @@ class Robot:
                 self.cell_size
             )
             pygame.draw.rect(screen, GREEN, rect)
+
+    def reached_goal(self):
+        return not self.path and self.current_position == self.goal_position

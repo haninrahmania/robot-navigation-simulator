@@ -100,3 +100,90 @@ Euclidean distance is admissible and consistent for an 8-connected weighted grid
 
 This results in more realistic trajectories, shorter path length, reduced “staircase” effect, and better approximation of continuous-space navigation
 
+### Version 0.4.0 -- 0.5.0 - Stable Interactive Navigation System
+
+This update finalizes the A* implementation and upgrades the simulator into a fully interactive, reusable navigation system.
+
+The focus of this release is algorithm stability, lifecycle management, and improved environment representation.
+
+#### Search Termination & Stability Improvements
+
+A critical edge-case was resolved in the A* search process.
+
+Previous behavior (v0.3):
+- The planner terminated only when the goal was reached.
+- If no valid path existed, the open set would become empty.
+- The algorithm failed to mark itself as finished.
+
+This caused the simulation loop to continue indefinitely and prevented proper failure reporting.
+
+Current behavior (v0.4):
+- The planner explicitly detects an empty open set.
+- Search now terminates correctly when no solution exists.
+- Failure state is properly reported without freezing the simulation.
+
+Result:
+- Stable algorithm lifecycle
+- Correct handling of impossible paths
+- No infinite update loops
+
+#### Planner Lifecycle Management
+The planner is now reusable without restarting the program.
+
+Added:
+- reset(start, goal) method
+- Full internal state reinitialization:
+-- open set
+-- closed set
+-- g-score map
+-- path state
+-- finished flag
+
+This allows:
+- Multiple planning queries in a single run
+- Dynamic replanning
+- Clean simulation resets
+
+#### Interactive Simulation Controls
+The simulator now supports real-time interaction through mouse inputs.
+
+Controls:
+- Left Click → Set new goal position
+- Right Click → Set new start position
+- Middle Click → Regenerate map
+
+Each interaction:
+- Resets planner state
+- Resets robot state
+- Replans automatically
+
+This transforms the project from a static demo into an interactive planning sandbox.
+
+#### Obstacle Inflation & Configuration Space Visualization
+Obstacle inflation was improved to better represent robot clearance.
+
+Improvements:
+- Inflated cells stored separately from real obstacles
+- Visual differentiation between obstacle types
+
+Grid representation:
+- 0 → Free space (white)
+- 1 → Real obstacles (black)
+- 2 → Inflated safety buffer (dark grey)
+
+Planner behavior:
+- Both real and inflated obstacles are treated as non-traversable.
+- The robot can only move through free cells.
+- This introduces a clearer approximation of configuration-space planning.
+
+#### Result
+
+Version 0.5.0 represents a major system milestone:
+- Stable A* implementation
+- Proper success and failure termination
+- Reusable planner lifecycle
+- Interactive replanning
+- Configuration-space obstacle inflation
+- Clear visual separation of environment layers
+
+The simulator now behaves as a fully interactive navigation prototype rather than a single-run pathfinding demo.

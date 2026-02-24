@@ -3,13 +3,20 @@ import math
 
 class AStarPlanner:
     def __init__(self, grid):
+        # self.grid = grid
+        # self.open_set = []
+        # self.came_from = {}
+        # self.g_score = {}
+        # self.closed_set = set()
+        # self.start = None
+        # self.goal = None
+        # self.finished = False
+        # self.path = None
         self.grid = grid
         self.open_set = []
-        self.came_from = {}
-        self.g_score = {}
         self.closed_set = set()
-        self.start = None
-        self.goal = None
+        self.g_score = {}
+        self.came_from = {}
         self.finished = False
         self.path = None
 
@@ -59,7 +66,12 @@ class AStarPlanner:
         self.path = None
 
     def step(self):
-        if not self.open_set or self.finished:
+        if self.finished:
+            return
+        
+        if not self.open_set:
+            self.finished = True
+            self.path = None
             return
 
         _, current = heapq.heappop(self.open_set)
@@ -102,3 +114,20 @@ class AStarPlanner:
             path.append(current)
         path.reverse()
         return path
+    
+    def reset(self, start, goal):
+        self.start = start
+        self.goal = goal
+
+        self.open_set = []
+        self.closed_set = set()
+
+        self.g_score = {start: 0}
+        self.came_from = {}
+
+        self.finished = False
+        self.path = None
+
+        # Initial f-score = heuristic(start, goal)
+        initial_f = self.heuristic(start, goal)
+        heapq.heappush(self.open_set, (initial_f, start))
